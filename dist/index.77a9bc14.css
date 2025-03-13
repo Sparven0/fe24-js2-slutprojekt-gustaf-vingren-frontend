@@ -202,6 +202,20 @@ button:hover {
   background-color: #388e3c;
 }
 
+.member {
+  border-style: solid;
+  border-color: #5b5b5b;
+  border-radius: 10px;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+}
+
+.member h2 {
+  margin-bottom: 20px;
+}
+
 .threeDivs {
   justify-content: space-evenly;
   width: 100%;

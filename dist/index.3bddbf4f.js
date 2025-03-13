@@ -855,10 +855,9 @@ var _memberFunctions = require("../Fetching Functions/memberFunctions");
 var _getAllTasks = require("../Fetching Functions/getAllTasks");
 function displayUser(username, email, role) {
     const loginWrapper = document.querySelector('.loginWrapper');
-    /* const prevMember = document.querySelector('.member');
-    if (prevMember) {
-        prevMember.remove();
-    }*/ const member = document.createElement('div');
+    const prevMember = document.querySelector('.member');
+    if (prevMember) prevMember.remove();
+    const member = document.createElement('div');
     member.classList.add('member');
     member.innerHTML = `
         <div>

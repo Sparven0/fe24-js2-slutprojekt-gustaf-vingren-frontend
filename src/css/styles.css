@@ -228,6 +228,19 @@ button:hover {
     background-color: #388e3c;
 }
 
+.member{
+    display: flex;
+    justify-content: center;
+    border-style: solid;
+    border-color: #5b5b5b;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.member h2{
+    margin-bottom: 20px;
+}
 
 .threeDivs{
     margin-top: 20px;
