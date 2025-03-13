@@ -12,9 +12,10 @@ import { getAllTasks } from "../Fetching Functions/getAllTasks";
 
 export function displayUser(username: string, email: string, role: string): void {
     const loginWrapper = document.querySelector('.loginWrapper') as HTMLDivElement;
-    loginWrapper.innerHTML = '';
     const member = document.createElement('div');
     member.classList.add('member');
+    const memberDiv = document.querySelector('.member') as HTMLDivElement;
+    memberDiv.innerHTML = '';
     member.innerHTML = `
         <div>
         <h1>Current user</h1>
