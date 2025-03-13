@@ -35,13 +35,16 @@ body {
     color: white;
 }
 
+
 .loginWrapper h2{
     text-align: center;
 }
 
 #loginForm{
     display: flex;
-    
+}
+.loginTitle{
+    text-align: center;
 }
 
 /* Add Task Wrapper Styles (still inside .loginWrapper) */
@@ -90,7 +93,7 @@ body {
     width: 100%;
     box-sizing: border-box;
     background-color: #d1ea47;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 10px;
     height: 270px;
     overflow: scroll;
@@ -120,17 +123,20 @@ body {
 }
 
 .taskElementCtext{
-    width: 80%;
+    width: 100%;
 }
+
 
 .taskElementPtext, .taskElementText{
     width: 80%;
     font-size: 20px;
     color: #4e4e4e;
-    padding-top: 5px;
+    padding-top: 8px;
     padding-bottom: 5px;
-    border-bottom-style: solid;
+    border-top-style: solid;
+    border-width: 0.75px;
     margin-bottom: 4px;
+    margin-top: 4px;
 }   
 
 #addTask{
@@ -172,14 +178,63 @@ button:hover {
 }
 
 .removeBtn{
-    height: 22px;
     padding: 1px;
-    border-radius: 1px
+    border-radius: 1px;
+    width: 100%;
 }
 
 .removeBtn:hover{
     background-color: red;
     color: white;
+}
+
+.createAccount{
+    display: none;
+}
+
+.createAccountShow{
+    display: block;
+    margin-top: 10px;
+    border-style: solid;
+    padding: 10px;
+    border-width: 0.75px;
+    border-radius: 10px;
+    animation: fade 500ms;
+}
+
+
+
+
+.createAccountDropDown, .loginDropDown, .filterDropDown{
+    text-align: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.filterI{
+    rotate: -90deg;
+}
+
+.loginI{
+    rotate: -90deg;
+}
+
+.createAccountI{
+    rotate: -90deg;
+   
+}
+
+#createAccountForm input, select{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    border-style: none;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+#createAccountForm button{
+    margin-left: 0px;
 }
 
 #addTaskForm {
@@ -271,6 +326,19 @@ width: 70%;
     margin-left: 0px;
 }
 .filters{
+    display:none
+}
+
+@keyframes fade{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.filtersShow{
     width: 100%;
     margin-top: 30px;
     padding: 10px;
@@ -279,6 +347,7 @@ width: 70%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    animation: fade 500ms;
 }
 #userFilter{
     width: 100%;

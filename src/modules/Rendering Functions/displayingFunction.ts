@@ -169,7 +169,7 @@ removeBtn.addEventListener('click', async (e) => {
     });
 
 });
-taskElementC.innerHTML = `<p class="taskElementCtext">Description: ${task.description}, Completed by: ${task.username}</p>`;
+taskElementC.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Completed by: ${task.username}</p>`;
 taskElementC.append(removeBtn);
 
 completedTasksList.append(taskElementC);
@@ -243,7 +243,7 @@ export function displayNotLoggedInTasks(task):void{
 const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
 const taskElementP = document.createElement('li');
 taskElementP.classList.add('taskElement');
-taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description}, <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
+taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
 inCompleteTasksList.append(taskElementP);   
 console.log(task, 'here!!');
 }

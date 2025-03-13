@@ -1,0 +1,323 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #212121;
+  height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
+  display: flex;
+}
+
+.mainWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.loginWrapper {
+  color: #fff;
+  background-color: #2c2c2c;
+  border-width: .75px;
+  border-color: #686868;
+  border-right-style: solid;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 300px;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+}
+
+.loginWrapper h2 {
+  text-align: center;
+}
+
+#loginForm {
+  display: flex;
+}
+
+.loginTitle {
+  text-align: center;
+}
+
+.taskProgressWrapper form {
+  width: 100%;
+}
+
+.taskProgressWrapper {
+  flex-grow: 1;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.completedTasksDiv, .incompleteTasksDiv, .notAssignedTasksDiv {
+  color: #ededed;
+  width: 33%;
+  height: 100%;
+  padding: 2.5px;
+}
+
+.incompleteTasksDiv {
+  border-left: .75px solid #686868;
+  border-right: .75px solid #686868;
+}
+
+.completedTasksDiv h2, .incompleteTasksDiv h2, .notAssignedTasksDiv h2 {
+  margin-top: 10px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.taskElement, .taskElementC, .taskElementP, .taskElementN {
+  box-sizing: border-box;
+  color: #000;
+  background-color: #d1ea47;
+  border-radius: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 270px;
+  margin-bottom: 10px;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+  overflow: scroll;
+}
+
+.taskElementC {
+  background-color: #4caf50;
+}
+
+.taskElementN {
+  background-color: #fe4444;
+}
+
+.taskElementC button, .taskElementP button {
+  height: 20px;
+}
+
+.taskElementN select, button {
+  text-align: center;
+  border-radius: 8px;
+  height: 40px;
+}
+
+.taskElementCtext {
+  width: 100%;
+}
+
+.taskElementPtext, .taskElementText {
+  color: #4e4e4e;
+  border-width: .75px;
+  border-top-style: solid;
+  width: 80%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+  font-size: 20px;
+}
+
+#addTask, .taskElement p, .taskElementP p {
+  width: 100%;
+}
+
+button, #usernameInput {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+@media screen and (width <= 768px) {
+  .loginWrapper {
+    width: 250px;
+  }
+
+  .taskProgressWrapper {
+    padding: 10px;
+  }
+
+  .completedTasksDiv, .incompleteTasksDiv, .notAssignedTasksDiv {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+.removeBtn {
+  border-radius: 1px;
+  width: 100%;
+  padding: 1px;
+}
+
+.removeBtn:hover {
+  color: #fff;
+  background-color: red;
+}
+
+.createAccount {
+  display: none;
+}
+
+.createAccountShow {
+  border-style: solid;
+  border-width: .75px;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  animation: .5s fade;
+  display: block;
+}
+
+.createAccountDropDown, .loginDropDown, .filterDropDown {
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.filterI, .loginI, .createAccountI {
+  rotate: -90deg;
+}
+
+#createAccountForm input, select {
+  border-style: none;
+  border-radius: 5px;
+  width: 100%;
+  height: 30px;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+#createAccountForm button {
+  margin-left: 0;
+}
+
+#addTaskForm {
+  color: #fff;
+  border: .75px solid #686868;
+  border-radius: 8px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  display: flex;
+  box-shadow: 0 4px 6px #0000001a;
+}
+
+#addTaskForm input, #addTaskForm select {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  font-size: 1em;
+}
+
+#assignedMember, #role, #description, #dueDate {
+  max-width: 200px;
+}
+
+#addTaskForm button {
+  color: #fff;
+  cursor: pointer;
+  background-color: #45a049;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+#addTaskForm button:hover {
+  background-color: #388e3c;
+}
+
+.member {
+  border-style: solid;
+  border-color: #5b5b5b;
+  border-radius: 10px;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+}
+
+.member h2 {
+  margin-bottom: 20px;
+}
+
+.threeDivs {
+  justify-content: space-evenly;
+  width: 100%;
+  height: 80%;
+  margin-top: 20px;
+  display: flex;
+  overflow-y: scroll;
+}
+
+#filterForm {
+  width: 70%;
+}
+
+.boxDiv input {
+  width: 30px;
+}
+
+.boxDiv {
+  width: 120px;
+  height: 25px;
+  padding: 2px;
+}
+
+#filter {
+  width: 100%;
+  margin-left: 0;
+}
+
+.filters {
+  display: none;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.filtersShow {
+  background-color: #686868;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 30px;
+  padding: 10px;
+  animation: .5s fade;
+  display: flex;
+}
+
+#userFilter, .roleDiv input {
+  width: 100%;
+}
+
+.roleDiv {
+  height: 30px;
+}
+/*# sourceMappingURL=index.77a9bc14.css.map */

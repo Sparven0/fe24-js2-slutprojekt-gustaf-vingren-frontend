@@ -69,3 +69,26 @@ displayOptions(memberSelect);
 displayOptions(memberSelectFilter);
 checkTasksNotLoggedIn();
 checkNotAssignedTask();
+
+
+
+
+const createAccountDropDown = document.querySelector('.createAccountDropDown') as HTMLDivElement;
+
+const filterDropDown = document.querySelector('.filterDropDown') as HTMLDivElement;
+const createAccountBox = document.querySelector('.createAccount') as HTMLDivElement;
+const createAccountArrow = document.querySelector('.createAccountI');
+const filterBox = document.querySelector('.filters') as HTMLDivElement;
+const filterArrow = document.querySelector('.filterI');
+
+
+createAccountDropDown.addEventListener('click', () => {
+  createAccountBox.classList.toggle('createAccountShow')
+createAccountArrow?.classList.toggle('createAccountI')
+})
+
+filterDropDown.addEventListener('click', () => {
+filterBox.classList.toggle('filtersShow')
+filterArrow?.classList.toggle('filterI')
+})
+
