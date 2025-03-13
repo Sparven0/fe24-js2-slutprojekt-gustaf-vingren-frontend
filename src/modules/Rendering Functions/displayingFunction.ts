@@ -282,9 +282,10 @@ export async function displayOptions(selectElement):Promise<void>{
        const tasks = await getAllTasks();
         const filteredTasks = tasks.filter(task => task.username === username);
        filteredTasks.forEach(task => {
+        if(task.username !== 'not-assigned'){
         displayNotLoggedInTasks(task);
         console.log(task);
-       }
+       }}
        )
         return filteredTasks;
     }
@@ -295,8 +296,9 @@ export async function displayOptions(selectElement):Promise<void>{
         const tasks = await getAllTasks();
         const filteredTasks = tasks.filter(task => task.role === role);
         filteredTasks.forEach(task => {
+            if(task.username !== 'not-assigned'){
             displayNotLoggedInTasks(task);
-        })
+     } })
         return filteredTasks;
     }
 
