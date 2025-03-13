@@ -12,10 +12,12 @@ import { getAllTasks } from "../Fetching Functions/getAllTasks";
 
 export function displayUser(username: string, email: string, role: string): void {
     const loginWrapper = document.querySelector('.loginWrapper') as HTMLDivElement;
+   /* const prevMember = document.querySelector('.member');
+    if (prevMember) {
+        prevMember.remove();
+    }*/
     const member = document.createElement('div');
     member.classList.add('member');
-    const memberDiv = document.querySelector('.member') as HTMLDivElement;
-    memberDiv.innerHTML = '';
     member.innerHTML = `
         <div>
         <h1>Current user</h1>
@@ -64,12 +66,13 @@ export async function checkTasksNotLoggedIn():Promise<Task[]>{
 // kontrollerar tasks för användare och visar de som inte är färdiga när "inloggad"
 
 export async function checkMemberTask(username):Promise<Task[]>{
+    await removeElements();
     const raw  = await fetch( `${getTasksForMemberUrl}/${username}`);
     const tasks = await raw.json();
     tasks.forEach(task => {
         if (task.isComplete == false && task.username !== 'not-assigned'){
             displayTaskAsProgress(task)
-            console.log()
+            console.log(task)
     }
 }
 )
@@ -94,9 +97,14 @@ export async function checkNotAssignedTask():Promise<Task[]>{
 
 // inte färdiga men assigned
 
-export async function displayTaskAsProgress(task):Promise<any>{
+async function removeElements(){
 const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
 inCompleteTasksList.innerHTML = ''; 
+}
+
+export async function displayTaskAsProgress(task):Promise<any>{
+    await removeElements();
+    const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
 const taskElement = document.createElement('li');
 taskElement.classList.add('taskElement');
 const boxDiv = document.createElement('div');
@@ -375,7 +383,7 @@ export async function sortTasksByTimeStamp(): Promise<Task[]> {
             if(task.username == 'not-assigned'){
             
             const taskElement= document.createElement('div');
-            taskElement.classList.add('taskElement');
+            taskElement.classList.add('taskElementLoggedIn');
             taskElement.innerHTML = `
             <p>Assigned to: ${task.username}</p>
             <p>For role: ${task.role}</p>

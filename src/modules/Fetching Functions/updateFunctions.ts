@@ -7,6 +7,7 @@ import { updateAssignedUserUrl } from "./urls";
 
 
 export async function updateIsComplete(taskID:number, taskStatus:boolean):Promise<void>{
+    console.log(taskID, taskStatus);
 const body = {
     isComplete: taskStatus,
 }
