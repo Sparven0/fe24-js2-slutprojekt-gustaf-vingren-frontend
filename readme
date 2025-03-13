@@ -1,0 +1,20 @@
+# Abstract
+
+Detta projektet är skapat i syfte att tillfredställa alla de krav som finns för G nivå på slutuppgiften i JS2. 
+Implementeringen av ExpressJS syftar givetvis också till att tillfredställa de krav som ställs för VG nivå,
+men jag är medveten att det kan finnas strukturella brister i koden såsom otydlig namngivning, svår navigation m.m 
+som förhindrar projektet från att till fullo uppnå kraven för VG (läsbarhet). 
+Oavsett nivå så har projektet varit väldigt roligt att ta sig ann och mycket har lärts på vägen - exempelvis
+hur koden kan bli mer strukturerad, hur modulering kan ske ytterligare ännu mer, bredare användning av OOP genom t.ex
+controllers för createUser, createTask m.m och att genom OOP minska mängden kod som används för diverse funktionalitet.
+
+#
+
+# Generell information
+
+I modules-mappen innuti src-mappen finns mappen 'Fetching Functions' och mappen 'Rendering Functions'.
+'Fetching Functions' har till syfte att samla de filer som innehåller funktioner som har det huvudsakliga syftet att
+utföra API-fetch funktioner.
+
+I mappen 'Rendering Functions' samlas funktioner som har till syfte att rendera olika element till DOMen.
+Funktionerna som utför fetch används även i 'Rendering Functions' för att slippa skriva fetch-funktioner innuti 'Rendering Functions'. 
