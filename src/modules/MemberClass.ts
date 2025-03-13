@@ -1,4 +1,4 @@
-import { getAll } from "./Fetching Functions/memberFunctions";
+
 import { displayUser } from "./Rendering Functions/displayingFunction";
 
 export class Member {
