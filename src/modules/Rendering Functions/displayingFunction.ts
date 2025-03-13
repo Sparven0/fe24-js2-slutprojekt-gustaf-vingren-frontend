@@ -188,7 +188,7 @@ export async function displayNotAssignedTask(task): Promise<any> {
     notAssignedTasksList.innerHTML = '';
     const taskElementN = document.createElement('li');
     taskElementN.classList.add('taskElementN');
-    taskElementN.innerHTML = `Description: ${task.description}, Assigned to: ${task.username}. Role: ${task.role}`;
+    taskElementN.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> Role: ${task.role}`;
     const assignUsersForm = document.createElement('form');
     assignUsersForm.id = 'assignUserForm';
     const assignedMemberOptions = document.createElement('select');
