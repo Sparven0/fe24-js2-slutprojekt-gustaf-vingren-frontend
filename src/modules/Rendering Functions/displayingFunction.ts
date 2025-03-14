@@ -102,7 +102,7 @@ const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDL
 inCompleteTasksList.innerHTML = ''; 
 }
 
-export async function displayTaskAsProgress(task):Promise<any>{
+export async function displayTaskAsProgress(task):Promise<void>{
     await removeElements();
     const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
 const taskElement = document.createElement('li');
@@ -183,7 +183,7 @@ export function displayTaskAsPending(task):void{
 
 // not assigned
 
-export async function displayNotAssignedTask(task): Promise<any> {
+export async function displayNotAssignedTask(task): Promise<void> {
     const notAssignedTasksList = document.querySelector('#notAssignedTasks') as HTMLDListElement;
     notAssignedTasksList.innerHTML = '';
     const taskElementN = document.createElement('li');
@@ -373,7 +373,7 @@ export async function sortTasksByTimeStamp(): Promise<Task[]> {
     // tasks för användare som är inloggad
 
 
-    export async function displayTasks(username: string): Promise<any> {
+    export async function displayTasks(username: string): Promise<void> {
         const previousDOM = document.querySelectorAll('.taskElement');
         if(previousDOM){
             previousDOM.forEach((element) => {

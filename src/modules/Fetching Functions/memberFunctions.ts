@@ -24,7 +24,7 @@ export async function getAll(): Promise<Member[]> {;
 // lägga till ny användare
 
 
-export async function postNew(username: string, email: string, role: string): Promise<any> {
+export async function postNew(username: string, email: string, role: string): Promise<void> {
     const body = {
         username: username,
         email: email,
@@ -86,7 +86,7 @@ function formatTimestamp(timeStamp: string): string {
     });
 }
 
-export async function writeTaskForMember(task: Task, func): Promise<any> {
+export async function writeTaskForMember(task: Task, func): Promise<void> {
     const formattedTimestamp = formatTimestamp(new Date().toISOString());
 
     const members = await getAll(); 
