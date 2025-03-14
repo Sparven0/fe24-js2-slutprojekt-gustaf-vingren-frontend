@@ -6,7 +6,13 @@ import { checkNotAssignedTask } from "./RenderingFunctions/displayingFunction";
 import { checkTasksNotLoggedIn } from "./RenderingFunctions/displayingFunction";
 import { checkStatus } from "./RenderingFunctions/displayingFunction";
 import { postNew } from "./Fetching Functions/memberFunctions";
-
+const filterForm = document.getElementById("filterForm") as HTMLFormElement;
+import { sortTasksAZ } from "./RenderingFunctions/sortAndFilter";
+import { sortTasksReversed } from "./RenderingFunctions/sortAndFilter";
+import { sortTasksByTimeStamp } from "./RenderingFunctions/sortAndFilter";
+import { sortTasksByTimeStampReversed } from "./RenderingFunctions/sortAndFilter";
+import { filterTasksUsername } from "./RenderingFunctions/sortAndFilter";
+import { filterTaskRole } from "./RenderingFunctions/sortAndFilter";
 
 
 // main.ts importerar och kör alla funktioner som körs "villkorslöst", dvs de som körs oavsett användarinteraktion.
@@ -94,5 +100,33 @@ filterBox.classList.toggle('filtersShow')
 filterArrow?.classList.toggle('filterI')
 })
 
+
+filterForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(filterForm);
+  const username = formData.get("userFilter");
+  const role = formData.get("role");
+  const timeAndAlph = formData.get("timeAndAlph");
+  if (timeAndAlph === "a-z") {
+    await sortTasksAZ();
+  } else if (timeAndAlph === "z-a") {
+    await sortTasksReversed();
+  } else if (timeAndAlph == "oldest") {
+    await sortTasksByTimeStampReversed();
+  } else {
+    await sortTasksByTimeStamp();
+  }
+
+  if (role === "any" && username === "any") {
+    return;
+  }
+  if (role === "any") {
+    await filterTasksUsername(username as string);
+  }
+  if (username === "any") {
+    await filterTaskRole(role as string);
+    return;
+  }
+});
 
 
