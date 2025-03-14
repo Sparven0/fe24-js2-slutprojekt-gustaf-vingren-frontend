@@ -1,6 +1,7 @@
-import { getAllTasks } from "./modules/Fetching Functions/getAllTasks";
-import { Task } from "./modules/Rendering Functions/TaskClass";
-import { displayNotLoggedInTasks } from "./modules/Rendering Functions/displayingFunction";
+import { getAllTasks } from "../Fetching Functions/getAllTasks";
+import { Task } from "./TaskClass";
+import { displayNotLoggedInTasks } from "./displayingFunction";
+const filterForm = document.querySelector('#filterForm') as HTMLFormElement;
 
 export async function filterTasksUsername(username: string):Promise<Task[]>{
     const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
@@ -29,7 +30,7 @@ export async function filterTaskRole(role: string):Promise<Task[]>{
 
 
 
-const filterForm = document.querySelector('#filterForm') as HTMLFormElement;
+
 filterForm.addEventListener('submit', async (e) => {
 e.preventDefault();
 const formData = new FormData(filterForm);
@@ -42,7 +43,12 @@ if(timeAndAlph === 'a-z'){
 else if(
     timeAndAlph === 'z-a'){
     await sortTasksReversed();
-}else{
+}
+else if(
+timeAndAlph == 'oldest'){
+    await sortTasksByTimeStampReversed();
+}
+else{
     await sortTasksByTimeStamp();
 }
 
@@ -96,6 +102,25 @@ sortedTasks.forEach(task => {
 return sortedTasks; 
 }
 
+export async function sortTasksByTimeStampReversed(): Promise<Task[]> {
+    const incompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
+    incompleteTasksList.innerHTML = '';
+    const tasks = await getAllTasks();
+    const sortedTasks = tasks.sort((a, b) => {
+        const aDate = new Date(a.timeStamp).getTime();
+        const bDate = new Date(b.timeStamp).getTime();
+        if (aDate < bDate) return -1;
+        if (aDate > bDate) return 1;
+        return 0;
+    });
+
+    sortedTasks.forEach(task => {
+        displayNotLoggedInTasks(task);
+    });
+
+    return sortedTasks;
+}
+
 
 
 
@@ -116,3 +141,5 @@ sortedTasks.forEach(task => {
 });
 return sortedTasks;
 }
+
+

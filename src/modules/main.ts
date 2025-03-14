@@ -94,3 +94,5 @@ filterBox.classList.toggle('filtersShow')
 filterArrow?.classList.toggle('filterI')
 })
 
+
+

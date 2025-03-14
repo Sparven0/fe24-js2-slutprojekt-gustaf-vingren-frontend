@@ -232,3 +232,5 @@ export async function displayOptions(selectElement): Promise<void> {
     selectElement.append(notAssignedOption, option, anyOptions);
   });
 }
+
+
