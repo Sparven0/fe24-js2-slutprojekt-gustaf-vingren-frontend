@@ -1,5 +1,5 @@
 import { initMember } from "./RenderingFunctions/initializeMember";
-import { displayOptions } from "./RenderingFunctions/displayingFunction";
+import { displayNotLoggedInTasks, displayOptions } from "./RenderingFunctions/displayingFunction";
 import { checkMemberTask } from "./RenderingFunctions/displayingFunction";
 import { Task } from "./RenderingFunctions/TaskClass";
 import { checkNotAssignedTask } from "./RenderingFunctions/displayingFunction";
@@ -102,6 +102,10 @@ filterArrow?.classList.toggle('filterI')
 
 
 filterForm.addEventListener("submit", async (e) => {
+  const incompleteTasksList = document.querySelector(
+    "#incompleteTasks"
+  ) as HTMLDListElement;
+  incompleteTasksList.innerHTML = "";
   e.preventDefault();
   const formData = new FormData(filterForm);
   const username = formData.get("userFilter");
@@ -119,11 +123,11 @@ filterForm.addEventListener("submit", async (e) => {
 
   if (role === "any" && username === "any") {
     return;
-  }
-  if (role === "any") {
+ }
+  if (role === "any" && username !== "any") {
     await filterTasksUsername(username as string);
   }
-  if (username === "any") {
+  if (username === "any" && role !== "any") {
     await filterTaskRole(role as string);
     return;
   }

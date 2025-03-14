@@ -219,17 +219,19 @@ export function displayNotLoggedInTasks(task): void {
 export async function displayOptions(selectElement): Promise<void> {
   selectElement.innerHTML = "";
   const members = await getAll();
-  const notAssignedOption = document.createElement("option");
-  notAssignedOption.value = "not-assigned";
-  notAssignedOption.innerText = "Not Assigned";
   const anyOptions = document.createElement("option");
   anyOptions.value = "any";
   anyOptions.innerText = "any";
+  const notAssignedOption = document.createElement("option");
+  notAssignedOption.value = "not-assigned";
+  notAssignedOption.innerText = "Not Assigned";
+  
+  
   members.forEach((member) => {
     const option = document.createElement("option");
     (option.value = member.username), member.role;
     option.innerText = `Member: ${member.username}, Role: ${member.role}`;
-    selectElement.append(notAssignedOption, option, anyOptions);
+    selectElement.append(anyOptions, notAssignedOption, option );
   });
 }
 

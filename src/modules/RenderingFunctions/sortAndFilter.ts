@@ -4,6 +4,7 @@ import { displayNotLoggedInTasks } from "./displayingFunction";
 
 
 export async function filterTasksUsername(username: string): Promise<Task[]> {
+    console.log('filterTasksUsername');
   const inCompleteTasksList = document.querySelector(
     "#incompleteTasks"
   ) as HTMLDListElement;
@@ -19,6 +20,7 @@ export async function filterTasksUsername(username: string): Promise<Task[]> {
 }
 
 export async function filterTaskRole(role: string): Promise<Task[]> {
+    console.log('filterTaskRole');
   const inCompleteTasksList = document.querySelector(
     "#incompleteTasks"
   ) as HTMLDListElement;
@@ -34,7 +36,7 @@ export async function filterTaskRole(role: string): Promise<Task[]> {
 }
 
 
-// sortera tasks a-z samt senaste (timestamp)
+// sortera tasks a-z samt tid (timestamp)
 
 export async function sortTasksAZ(): Promise<Task[]> {
   const incompleteTasksList = document.querySelector(
@@ -51,11 +53,13 @@ export async function sortTasksAZ(): Promise<Task[]> {
     return 0;
   });
   sortedTasks.forEach((task) => {
-    displayNotLoggedInTasks(task);
+    if(task.username !== "not-assigned") {
+    displayNotLoggedInTasks(task)};
   });
   return sortedTasks;
 }
 export async function sortTasksByTimeStamp(): Promise<Task[]> {
+    console.log('sortTasksByTimeStamp');
   const incompleteTasksList = document.querySelector(
     "#incompleteTasks"
   ) as HTMLDListElement;
@@ -70,13 +74,15 @@ export async function sortTasksByTimeStamp(): Promise<Task[]> {
   });
 
   sortedTasks.forEach((task) => {
-    displayNotLoggedInTasks(task);
+    if(task.username !== "not-assigned") {
+    displayNotLoggedInTasks(task)};
   });
 
   return sortedTasks;
 }
 
 export async function sortTasksByTimeStampReversed(): Promise<Task[]> {
+    console.log('sortTasksByTimeStampReversed');
   const incompleteTasksList = document.querySelector(
     "#incompleteTasks"
   ) as HTMLDListElement;
@@ -91,13 +97,15 @@ export async function sortTasksByTimeStampReversed(): Promise<Task[]> {
   });
 
   sortedTasks.forEach((task) => {
-    displayNotLoggedInTasks(task);
+    if(task.username !== "not-assigned") {
+    displayNotLoggedInTasks(task)};
   });
 
   return sortedTasks;
 }
 
 export async function sortTasksReversed(): Promise<Task[]> {
+    console.log('sortTasksReversed');
   const incompleteTasksList = document.querySelector(
     "#incompleteTasks"
   ) as HTMLDListElement;
@@ -112,7 +120,8 @@ export async function sortTasksReversed(): Promise<Task[]> {
     return 0;
   });
   sortedTasks.forEach((task) => {
-    displayNotLoggedInTasks(task);
+    if(task.username !== "not-assigned") {
+    displayNotLoggedInTasks(task)};
   });
   return sortedTasks;
 }

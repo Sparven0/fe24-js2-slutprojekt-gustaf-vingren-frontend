@@ -663,6 +663,8 @@ filterDropDown.addEventListener('click', ()=>{
     filterArrow?.classList.toggle('filterI');
 });
 filterForm.addEventListener("submit", async (e)=>{
+    const incompleteTasksList = document.querySelector("#incompleteTasks");
+    incompleteTasksList.innerHTML = "";
     e.preventDefault();
     const formData = new FormData(filterForm);
     const username = formData.get("userFilter");
@@ -673,8 +675,8 @@ filterForm.addEventListener("submit", async (e)=>{
     else if (timeAndAlph == "oldest") await (0, _sortAndFilter.sortTasksByTimeStampReversed)();
     else await (0, _sortAndFilter.sortTasksByTimeStamp)();
     if (role === "any" && username === "any") return;
-    if (role === "any") await (0, _sortAndFilter.filterTasksUsername)(username);
-    if (username === "any") {
+    if (role === "any" && username !== "any") await (0, _sortAndFilter.filterTasksUsername)(username);
+    if (username === "any" && role !== "any") {
         await (0, _sortAndFilter.filterTaskRole)(role);
         return;
     }
@@ -1105,17 +1107,17 @@ function displayNotLoggedInTasks(task) {
 async function displayOptions(selectElement) {
     selectElement.innerHTML = "";
     const members = await (0, _memberFunctions.getAll)();
-    const notAssignedOption = document.createElement("option");
-    notAssignedOption.value = "not-assigned";
-    notAssignedOption.innerText = "Not Assigned";
     const anyOptions = document.createElement("option");
     anyOptions.value = "any";
     anyOptions.innerText = "any";
+    const notAssignedOption = document.createElement("option");
+    notAssignedOption.value = "not-assigned";
+    notAssignedOption.innerText = "Not Assigned";
     members.forEach((member)=>{
         const option = document.createElement("option");
         option.value = member.username, member.role;
         option.innerText = `Member: ${member.username}, Role: ${member.role}`;
-        selectElement.append(notAssignedOption, option, anyOptions);
+        selectElement.append(anyOptions, notAssignedOption, option);
     });
 }
 
@@ -1264,7 +1266,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "filterTasksUsername", ()=>filterTasksUsername);
 parcelHelpers.export(exports, "filterTaskRole", ()=>filterTaskRole);
-// sortera tasks a-z samt senaste (timestamp)
+// sortera tasks a-z samt tid (timestamp)
 parcelHelpers.export(exports, "sortTasksAZ", ()=>sortTasksAZ);
 parcelHelpers.export(exports, "sortTasksByTimeStamp", ()=>sortTasksByTimeStamp);
 parcelHelpers.export(exports, "sortTasksByTimeStampReversed", ()=>sortTasksByTimeStampReversed);
@@ -1272,6 +1274,7 @@ parcelHelpers.export(exports, "sortTasksReversed", ()=>sortTasksReversed);
 var _getAllTasks = require("../Fetching Functions/getAllTasks");
 var _displayingFunction = require("./displayingFunction");
 async function filterTasksUsername(username) {
+    console.log('filterTasksUsername');
     const inCompleteTasksList = document.querySelector("#incompleteTasks");
     inCompleteTasksList.innerHTML = "";
     const tasks = await (0, _getAllTasks.getAllTasks)();
@@ -1282,6 +1285,7 @@ async function filterTasksUsername(username) {
     return filteredTasks;
 }
 async function filterTaskRole(role) {
+    console.log('filterTaskRole');
     const inCompleteTasksList = document.querySelector("#incompleteTasks");
     inCompleteTasksList.innerHTML = "";
     const tasks = await (0, _getAllTasks.getAllTasks)();
@@ -1303,11 +1307,12 @@ async function sortTasksAZ() {
         return 0;
     });
     sortedTasks.forEach((task)=>{
-        (0, _displayingFunction.displayNotLoggedInTasks)(task);
+        if (task.username !== "not-assigned") (0, _displayingFunction.displayNotLoggedInTasks)(task);
     });
     return sortedTasks;
 }
 async function sortTasksByTimeStamp() {
+    console.log('sortTasksByTimeStamp');
     const incompleteTasksList = document.querySelector("#incompleteTasks");
     incompleteTasksList.innerHTML = "";
     const tasks = await (0, _getAllTasks.getAllTasks)();
@@ -1319,11 +1324,12 @@ async function sortTasksByTimeStamp() {
         return 0;
     });
     sortedTasks.forEach((task)=>{
-        (0, _displayingFunction.displayNotLoggedInTasks)(task);
+        if (task.username !== "not-assigned") (0, _displayingFunction.displayNotLoggedInTasks)(task);
     });
     return sortedTasks;
 }
 async function sortTasksByTimeStampReversed() {
+    console.log('sortTasksByTimeStampReversed');
     const incompleteTasksList = document.querySelector("#incompleteTasks");
     incompleteTasksList.innerHTML = "";
     const tasks = await (0, _getAllTasks.getAllTasks)();
@@ -1335,11 +1341,12 @@ async function sortTasksByTimeStampReversed() {
         return 0;
     });
     sortedTasks.forEach((task)=>{
-        (0, _displayingFunction.displayNotLoggedInTasks)(task);
+        if (task.username !== "not-assigned") (0, _displayingFunction.displayNotLoggedInTasks)(task);
     });
     return sortedTasks;
 }
 async function sortTasksReversed() {
+    console.log('sortTasksReversed');
     const incompleteTasksList = document.querySelector("#incompleteTasks");
     incompleteTasksList.innerHTML = "";
     const tasks = await (0, _getAllTasks.getAllTasks)();
@@ -1351,7 +1358,7 @@ async function sortTasksReversed() {
         return 0;
     });
     sortedTasks.forEach((task)=>{
-        (0, _displayingFunction.displayNotLoggedInTasks)(task);
+        if (task.username !== "not-assigned") (0, _displayingFunction.displayNotLoggedInTasks)(task);
     });
     return sortedTasks;
 }
