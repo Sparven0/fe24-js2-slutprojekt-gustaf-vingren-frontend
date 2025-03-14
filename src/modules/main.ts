@@ -35,12 +35,13 @@ addTaskForm.addEventListener("submit", async (e) => {
   }
   
   const formData = new FormData(addTaskForm);
+  const title = formData.get("title") as string;
   const username = formData.get("assignedMember") as string;
   const description = formData.get("description") as string;
   const dueDate = formData.get("due") as string;
   const role = formData.get("role") as string;
   
-  const newTask = new Task(username, role, description, dueDate, false);
+  const newTask = new Task(title, username, role, description, dueDate, false);
   await newTask.createNewTask(); 
   await checkNotAssignedTask();
   await checkTasksNotLoggedIn();

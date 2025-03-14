@@ -3,6 +3,7 @@ import { getTasksForMember } from "../Fetching Functions/memberFunctions";
 import { updateIsComplete } from "../Fetching Functions/updateFunctions";
 
 export class Task {
+    public title: string;
     public username: string;
     public readonly description: string;
     public readonly role: string;
@@ -12,6 +13,7 @@ export class Task {
     public id:number;
 
     constructor(
+        title: string,
         username: string,
         role: string,
         description: string,
@@ -19,6 +21,7 @@ export class Task {
         isComplete: boolean,
         timeStamp?: string
     ) {
+        this.title = title;
         this.username = username;
         this.description = description;
         this.role = role;
@@ -30,6 +33,7 @@ export class Task {
     // Create a new task and send it to the server using the writeTaskForMember function
     async createNewTask(): Promise<void> {
         const taskData = {
+            title: this.title,
             username: this.username,
             role: this.role,
             description: this.description,
@@ -51,6 +55,7 @@ export class Task {
                 const taskElement = document.createElement('div');
                 taskElement.classList.add('taskElementLoggedIn');
                 taskElement.innerHTML = `
+                <p>Title: ${task.title}</p>
                     <p>Assigned to: ${task.username}</p>
                     <p>For role: ${task.role}</p>
                     <p>Task: ${task.description}</p>

@@ -105,7 +105,7 @@ export async function displayTaskAsProgress(task): Promise<void> {
   });
   boxDiv.append(updateCheckbox, label);
   taskElement.innerHTML = `
-
+  <p class="taskElementTitle">${task.title}</p>
 <p class="taskElementText">Description:</p> ${task.description}
 <p class="taskElementText">Assigned to: ${task.username}</p>
 <p class="taskElementText">Due date: </p>${task.dueDate}
@@ -139,7 +139,7 @@ export function displayTaskAsComplete(task): void {
       }
     });
   });
-  taskElementC.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Completed by: ${task.username}</p>`;
+  taskElementC.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Completed by: ${task.username}</p>`;
   taskElementC.append(removeBtn);
 
   completedTasksList.append(taskElementC);
@@ -156,7 +156,7 @@ export async function displayNotAssignedTask(task): Promise<void> {
   notAssignedTasksList.innerHTML = "";
   const taskElementN = document.createElement("li");
   taskElementN.classList.add("taskElementN");
-  taskElementN.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> <p class="taskElementCtext>Role: ${task.role}</p><p class="taskElementCtext>Due: ${task.dueDate}</p><p class="taskElementCtext>Created: ${task.timeStamp}</p>`;
+  taskElementN.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> <p class="taskElementCtext>Role: ${task.role}</p><p class="taskElementCtext>Due: ${task.dueDate}</p><p class="taskElementCtext>Created: ${task.timeStamp}</p>`;
   const assignUsersForm = document.createElement("form");
   assignUsersForm.id = "assignUserForm";
   const assignedMemberOptions = document.createElement("select");
@@ -210,7 +210,7 @@ export function displayNotLoggedInTasks(task): void {
   ) as HTMLDListElement;
   const taskElementP = document.createElement("li");
   taskElementP.classList.add("taskElement");
-  taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
+  taskElementP.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
   inCompleteTasksList.append(taskElementP);
 }
 

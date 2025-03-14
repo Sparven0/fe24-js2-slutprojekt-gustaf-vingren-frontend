@@ -620,11 +620,12 @@ addTaskForm.addEventListener("submit", async (e)=>{
         element.remove();
     });
     const formData = new FormData(addTaskForm);
+    const title = formData.get("title");
     const username = formData.get("assignedMember");
     const description = formData.get("description");
     const dueDate = formData.get("due");
     const role = formData.get("role");
-    const newTask = new (0, _taskClass.Task)(username, role, description, dueDate, false);
+    const newTask = new (0, _taskClass.Task)(title, username, role, description, dueDate, false);
     await newTask.createNewTask();
     await (0, _displayingFunction.checkNotAssignedTask)();
     await (0, _displayingFunction.checkTasksNotLoggedIn)();
@@ -753,6 +754,7 @@ async function writeTaskForMember(taskData) {
     const members = await getAll();
     if (taskData.username === 'not-assigned') {
         const body = {
+            title: taskData.title,
             username: taskData.username,
             role: taskData.role,
             description: taskData.description,
@@ -1004,7 +1006,7 @@ async function displayTaskAsProgress(task) {
     });
     boxDiv.append(updateCheckbox, label);
     taskElement.innerHTML = `
-
+  <p class="taskElementTitle">${task.title}</p>
 <p class="taskElementText">Description:</p> ${task.description}
 <p class="taskElementText">Assigned to: ${task.username}</p>
 <p class="taskElementText">Due date: </p>${task.dueDate}
@@ -1028,7 +1030,7 @@ function displayTaskAsComplete(task) {
             if (element.innerHTML.includes(task.description)) inCompleteTasksList.removeChild(element);
         });
     });
-    taskElementC.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Completed by: ${task.username}</p>`;
+    taskElementC.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Completed by: ${task.username}</p>`;
     taskElementC.append(removeBtn);
     completedTasksList.append(taskElementC);
 }
@@ -1038,7 +1040,7 @@ async function displayNotAssignedTask(task) {
     notAssignedTasksList.innerHTML = "";
     const taskElementN = document.createElement("li");
     taskElementN.classList.add("taskElementN");
-    taskElementN.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> <p class="taskElementCtext>Role: ${task.role}</p><p class="taskElementCtext>Due: ${task.dueDate}</p><p class="taskElementCtext>Created: ${task.timeStamp}</p>`;
+    taskElementN.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> <p class="taskElementCtext>Role: ${task.role}</p><p class="taskElementCtext>Due: ${task.dueDate}</p><p class="taskElementCtext>Created: ${task.timeStamp}</p>`;
     const assignUsersForm = document.createElement("form");
     assignUsersForm.id = "assignUserForm";
     const assignedMemberOptions = document.createElement("select");
@@ -1078,7 +1080,7 @@ function displayNotLoggedInTasks(task) {
     const inCompleteTasksList = document.querySelector("#incompleteTasks");
     const taskElementP = document.createElement("li");
     taskElementP.classList.add("taskElement");
-    taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
+    taskElementP.innerHTML = `<p class="taskElementTitle">${task.title}</p><p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
     inCompleteTasksList.append(taskElementP);
 }
 async function displayOptions(selectElement) {
@@ -1185,7 +1187,8 @@ parcelHelpers.export(exports, "Task", ()=>Task);
 var _memberFunctions = require("../Fetching Functions/memberFunctions");
 var _updateFunctions = require("../Fetching Functions/updateFunctions");
 class Task {
-    constructor(username, role, description, dueDate, isComplete, timeStamp){
+    constructor(title, username, role, description, dueDate, isComplete, timeStamp){
+        this.title = title;
         this.username = username;
         this.description = description;
         this.role = role;
@@ -1196,6 +1199,7 @@ class Task {
     // Create a new task and send it to the server using the writeTaskForMember function
     async createNewTask() {
         const taskData = {
+            title: this.title,
             username: this.username,
             role: this.role,
             description: this.description,
@@ -1216,6 +1220,7 @@ class Task {
                 const taskElement = document.createElement('div');
                 taskElement.classList.add('taskElementLoggedIn');
                 taskElement.innerHTML = `
+                <p>Title: ${task.title}</p>
                     <p>Assigned to: ${task.username}</p>
                     <p>For role: ${task.role}</p>
                     <p>Task: ${task.description}</p>

@@ -91,6 +91,7 @@ export async function writeTaskForMember(taskData): Promise<void> {
     const members = await getAll(); 
     if (taskData.username === 'not-assigned') {
         const body = {
+            title: taskData.title,
             username: taskData.username,
             role: taskData.role,
             description: taskData.description,
