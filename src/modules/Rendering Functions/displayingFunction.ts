@@ -8,28 +8,6 @@ import { getTasksForMember } from "../Fetching Functions/memberFunctions";
 import { getAllTasks } from "../Fetching Functions/getAllTasks";
 
 
-// visar användare som är "inloggad"
-
-export function displayUser(username: string, email: string, role: string): void {
-    const loginWrapper = document.querySelector('.loginWrapper') as HTMLDivElement;
-   const prevMember = document.querySelector('.member');
-    if (prevMember) {
-        prevMember.remove();
-    }
-    const member = document.createElement('div');
-    member.classList.add('member');
-    member.innerHTML = `
-        <div>
-        <h1>Current user</h1>
-        <br></br>
-            <h2>${username}</h2>
-            <p>${email}</p>
-            <p>${role}</p>
-        </div>`;
-    loginWrapper.append(member);
-}
-
-
 // kontrolerar status på tasks och visar de som är färdiga
 
 export async function checkStatus():Promise<Task[]>{
@@ -38,7 +16,6 @@ export async function checkStatus():Promise<Task[]>{
     tasks.forEach(task => {
         const status = task.isComplete;
         if (status == true){
-    console.log(task);
     displayTaskAsComplete(task)
         }
     })
@@ -72,7 +49,6 @@ export async function checkMemberTask(username):Promise<Task[]>{
     tasks.forEach(task => {
         if (task.isComplete == false && task.username !== 'not-assigned'){
             displayTaskAsProgress(task)
-            console.log(task)
     }
 }
 )
@@ -127,8 +103,6 @@ updateCheckbox.addEventListener('change', async (e) => {
         inCompleteTasksList.removeChild(taskElement);
         
     }
-
-    console.log(task.id);
     await checkStatus();
 });
 boxDiv.append(updateCheckbox, label);
@@ -245,7 +219,6 @@ const taskElementP = document.createElement('li');
 taskElementP.classList.add('taskElement');
 taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
 inCompleteTasksList.append(taskElementP);   
-console.log(task, 'here!!');
 }
 
 
@@ -269,149 +242,8 @@ export async function displayOptions(selectElement):Promise<void>{
         selectElement.append(notAssignedOption, option, anyOptions);
     
     })};
-    
 
-
-    // får ej att fungera i annan modul
 
 
    
-   export async function filterTasksUsername(username: string):Promise<Task[]>{
-        const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
-        inCompleteTasksList.innerHTML = '';
-       const tasks = await getAllTasks();
-        const filteredTasks = tasks.filter(task => task.username === username);
-       filteredTasks.forEach(task => {
-        if(task.username !== 'not-assigned'){
-        displayNotLoggedInTasks(task);
-        console.log(task);
-       }}
-       )
-        return filteredTasks;
-    }
-
-    export async function filterTaskRole(role: string):Promise<Task[]>{
-        const inCompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
-        inCompleteTasksList.innerHTML = '';
-        const tasks = await getAllTasks();
-        const filteredTasks = tasks.filter(task => task.role === role);
-        filteredTasks.forEach(task => {
-            if(task.username !== 'not-assigned'){
-            displayNotLoggedInTasks(task);
-     } })
-        return filteredTasks;
-    }
-
-
-    
-    const filterForm = document.querySelector('#filterForm') as HTMLFormElement;
-    filterForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(filterForm);
-    const username = formData.get('userFilter');
-    const role = formData.get('role');
-    const timeAndAlph = formData.get('timeAndAlph');
-    if(timeAndAlph === 'a-z'){
-        await sortTasksAZ();
-    }else{
-        await sortTasksByTimeStamp();
-    }
-
-    if(role === 'any' && username === 'any'){
-    return
-    }if(role === 'any'){
-        await filterTasksUsername(username as string);
-    }
-    if (username === 'any') {
-        await filterTaskRole(role as string);
-        return;
-    }
-    })
-
-
-// sortera tasks a-z samt senaste (timestamp)
-
-export async function sortTasksAZ(): Promise<Task[]> {
-    const incompleteTasksList = document.querySelector('#incompleteTasks') as HTMLDListElement;
-    incompleteTasksList.innerHTML = '';
-    const tasks = await getAllTasks(); 
-    const sortedTasks = tasks.sort((a, b) => {
-        const aDescription = a.description.toLowerCase();  
-        const bDescription = b.description.toLowerCase();  
-        
-        if (aDescription < bDescription) return -1;
-        if (aDescription > bDescription) return 1;
-        console.log(sortedTasks)
-        return 0; 
-    });
-   sortedTasks.forEach(task => {
-    displayNotLoggedInTasks(task);
-   })
-    return sortedTasks;  
-}
-export async function sortTasksByTimeStamp(): Promise<Task[]> {
-    const tasks = await getAllTasks();
-    const sortedTasks = tasks.sort((a, b) => {
-        const aDate = new Date(a.timeStamp).getTime();
-        const bDate = new Date(b.timeStamp).getTime();
-        console.log(a.timeStamp);
-
-        if (aDate > bDate) return -1; 
-        if (aDate < bDate) return 1; 
-        return 0; 
-    });
-
-    sortedTasks.forEach(task => {
-        displayNotLoggedInTasks(task);
-    })
-
-    return sortedTasks; 
-}
-
-
-
-    // tasks för användare som är inloggad
-
-
-    export async function displayTasks(username: string): Promise<void> {
-        const previousDOM = document.querySelectorAll('.taskElement');
-        if(previousDOM){
-            previousDOM.forEach((element) => {
-                element.remove();
-            });
-        }
-        const response = await getTasksForMember(username);
-        response.forEach((task: any) => {
-            if(task.username == 'not-assigned'){
-            
-            const taskElement= document.createElement('div');
-            taskElement.classList.add('taskElementLoggedIn');
-            taskElement.innerHTML = `
-            <p>Assigned to: ${task.username}</p>
-            <p>For role: ${task.role}</p>
-            <p>Task: ${task.description}</p>
-            <p>Deadline: ${task.dueDate}</p>
-            <p>Task ID: ${task.id}</p>
-            <input type="checkbox" id="isCompletedBox">Status: ${task.isComplete}</input>` 
-    
-            // konsultera med lärare om detta är rätt sätt att göra eller om mer modulering kan implementeras
-    
-            const isCompletedBox = taskElement.querySelector('#isCompletedBox') as HTMLInputElement;
-            if(task.isComplete == true){
-                isCompletedBox.checked = true;
-            }else{
-                isCompletedBox.checked = false;
-            }
-            isCompletedBox.addEventListener('change', async (e) => {
-               await updateIsComplete(task.id, isCompletedBox.checked);
-              displayTasks(task.username);
-                console.log(task.id);
-            })
-    
-            document.body.appendChild(taskElement);}
-        });
-    };
-    
-    
-
- 
+   

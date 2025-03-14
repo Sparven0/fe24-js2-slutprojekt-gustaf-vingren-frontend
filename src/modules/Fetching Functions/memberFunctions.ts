@@ -86,16 +86,16 @@ function formatTimestamp(timeStamp: string): string {
     });
 }
 
-export async function writeTaskForMember(task: Task, func): Promise<void> {
+export async function writeTaskForMember(taskData): Promise<void> {
     const formattedTimestamp = formatTimestamp(new Date().toISOString());
 
     const members = await getAll(); 
-    if (task.username === 'not-assigned') {
+    if (taskData.username === 'not-assigned') {
         const body = {
-            username: task.username,
-            role: task.role,
-            description: task.description,
-            dueDate: task.dueDate,
+            username: taskData.username,
+            role: taskData.role,
+            description: taskData.description,
+            dueDate: taskData.dueDate,
             id: Date.now(),
             isComplete: false,
             timeStamp: formattedTimestamp
@@ -120,21 +120,21 @@ export async function writeTaskForMember(task: Task, func): Promise<void> {
     }
 
     // Case 2: Task username matches a member's username, proceed with POST request
-    const user = members.find((member) => member.username === task.username);
+    const user = members.find((member) => member.username === taskData.username);
     
     if (user) {
         // Check role mismatch
-        if (user.role !== task.role && task.role !== 'not-assigned') {
+        if (user.role !== taskData.role && taskData.role !== 'not-assigned') {
             alert("Incorrect role.. not their job!")
-            console.log('Role mismatch: User role does not match task role, user-role:', task.role);
+            console.log('Role mismatch: User role does not match task role, user-role:', taskData.role);
             throw new Error('Role mismatch: User role does not match task role');
         }
 
         const body = {
-            username: task.username,
-            role: task.role,
-            description: task.description,
-            dueDate: task.dueDate,
+            username: taskData.username,
+            role: taskData.role,
+            description: taskData.description,
+            dueDate: taskData.dueDate,
             id: Date.now(),
             isComplete: false,
             timeStamp: formattedTimestamp

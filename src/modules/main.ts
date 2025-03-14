@@ -1,6 +1,5 @@
 import { initMember } from "./Rendering Functions/initializeMember";
 import { displayOptions } from "./Rendering Functions/displayingFunction";
-import { writeTaskForMember } from "./Fetching Functions/memberFunctions";
 import { checkMemberTask } from "./Rendering Functions/displayingFunction";
 import { Task } from "./Rendering Functions/TaskClass";
 import { checkNotAssignedTask } from "./Rendering Functions/displayingFunction";
@@ -34,17 +33,19 @@ addTaskForm.addEventListener("submit", async (e) => {
       element.remove();
     });
   }
+  
   const formData = new FormData(addTaskForm);
   const username = formData.get("assignedMember") as string;
   const description = formData.get("description") as string;
   const dueDate = formData.get("due") as string;
   const role = formData.get("role") as string;
+  
   const newTask = new Task(username, role, description, dueDate, false);
-
-  await writeTaskForMember(newTask, await checkNotAssignedTask());
+  await newTask.createNewTask(); 
   await checkNotAssignedTask();
   await checkTasksNotLoggedIn();
 });
+
 
 const createUserForm = document.querySelector('#createAccountForm') as HTMLFormElement;
 

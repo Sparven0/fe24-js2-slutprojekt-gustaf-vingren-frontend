@@ -602,8 +602,8 @@ parcelHelpers.export(exports, "loginForm", ()=>loginForm);
 parcelHelpers.export(exports, "memberSelect", ()=>memberSelect);
 var _initializeMember = require("./Rendering Functions/initializeMember");
 var _displayingFunction = require("./Rendering Functions/displayingFunction");
-var _memberFunctions = require("./Fetching Functions/memberFunctions");
 var _taskClass = require("./Rendering Functions/TaskClass");
+var _memberFunctions = require("./Fetching Functions/memberFunctions");
 const loginForm = document.querySelector("#loginForm");
 loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
@@ -625,7 +625,7 @@ addTaskForm.addEventListener("submit", async (e)=>{
     const dueDate = formData.get("due");
     const role = formData.get("role");
     const newTask = new (0, _taskClass.Task)(username, role, description, dueDate, false);
-    await (0, _memberFunctions.writeTaskForMember)(newTask, await (0, _displayingFunction.checkNotAssignedTask)());
+    await newTask.createNewTask();
     await (0, _displayingFunction.checkNotAssignedTask)();
     await (0, _displayingFunction.checkTasksNotLoggedIn)();
 });
@@ -660,7 +660,7 @@ filterDropDown.addEventListener('click', ()=>{
     filterArrow?.classList.toggle('filterI');
 });
 
-},{"./Rendering Functions/initializeMember":"g6kXf","./Rendering Functions/displayingFunction":"8gRnw","./Fetching Functions/memberFunctions":"cwo3O","./Rendering Functions/TaskClass":"eD2H5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"g6kXf":[function(require,module,exports,__globalThis) {
+},{"./Rendering Functions/initializeMember":"g6kXf","./Rendering Functions/displayingFunction":"8gRnw","./Rendering Functions/TaskClass":"eD2H5","./Fetching Functions/memberFunctions":"cwo3O","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"g6kXf":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // initialisera membern
@@ -669,7 +669,7 @@ var _memberFunctions = require("../Fetching Functions/memberFunctions");
 async function initMember(username) {
     const members = await (0, _memberFunctions.getAll)();
     const member = members.find((member)=>member.username === username);
-    if (member) member.displayMember(username);
+    if (member) member.displayMember();
 }
 
 },{"../Fetching Functions/memberFunctions":"cwo3O","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cwo3O":[function(require,module,exports,__globalThis) {
@@ -748,15 +748,15 @@ function formatTimestamp(timeStamp) {
         day: '2-digit'
     });
 }
-async function writeTaskForMember(task, func) {
+async function writeTaskForMember(taskData) {
     const formattedTimestamp = formatTimestamp(new Date().toISOString());
     const members = await getAll();
-    if (task.username === 'not-assigned') {
+    if (taskData.username === 'not-assigned') {
         const body = {
-            username: task.username,
-            role: task.role,
-            description: task.description,
-            dueDate: task.dueDate,
+            username: taskData.username,
+            role: taskData.role,
+            description: taskData.description,
+            dueDate: taskData.dueDate,
             id: Date.now(),
             isComplete: false,
             timeStamp: formattedTimestamp
@@ -778,19 +778,19 @@ async function writeTaskForMember(task, func) {
         return;
     }
     // Case 2: Task username matches a member's username, proceed with POST request
-    const user = members.find((member)=>member.username === task.username);
+    const user = members.find((member)=>member.username === taskData.username);
     if (user) {
         // Check role mismatch
-        if (user.role !== task.role && task.role !== 'not-assigned') {
+        if (user.role !== taskData.role && taskData.role !== 'not-assigned') {
             alert("Incorrect role.. not their job!");
-            console.log('Role mismatch: User role does not match task role, user-role:', task.role);
+            console.log('Role mismatch: User role does not match task role, user-role:', taskData.role);
             throw new Error('Role mismatch: User role does not match task role');
         }
         const body = {
-            username: task.username,
-            role: task.role,
-            description: task.description,
-            dueDate: task.dueDate,
+            username: taskData.username,
+            role: taskData.role,
+            description: taskData.description,
+            dueDate: taskData.dueDate,
             id: Date.now(),
             isComplete: false,
             timeStamp: formattedTimestamp
@@ -820,23 +820,101 @@ async function writeTaskForMember(task, func) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Member", ()=>Member);
-var _displayingFunction = require("./Rendering Functions/displayingFunction");
 class Member {
     constructor(username, email, role){
         this.username = username;
         this.email = email;
         this.role = role;
     }
-    displayMember(username) {
-        (0, _displayingFunction.displayUser)(this.username, this.email, this.role);
+    // Display the current user info (assumed to be the logged-in user)
+    displayUser(username, email, role) {
+        const loginWrapper = document.querySelector('.loginWrapper');
+        const prevMember = document.querySelector('.member');
+        if (prevMember) prevMember.remove();
+        const member = document.createElement('div');
+        member.classList.add('member');
+        member.innerHTML = `
+            <div>
+                <h1>Current user</h1>
+                <br></br>
+                <h2>${username}</h2>
+                <p>${email}</p>
+                <p>${role}</p>
+            </div>`;
+        loginWrapper.append(member);
+    }
+    // Display member details
+    displayMember() {
+        const loginWrapper = document.querySelector('.loginWrapper');
+        const prevMember = document.querySelector('.member');
+        if (prevMember) prevMember.remove();
+        const member = document.createElement('div');
+        member.classList.add('member');
+        member.innerHTML = `
+            <div>
+                <h1>Current user</h1>
+                <br></br>
+                <h2>${this.username}</h2>
+                <p>${this.email}</p>
+                <p>${this.role}</p>
+            </div>`;
+        loginWrapper.append(member);
     }
 }
 
-},{"./Rendering Functions/displayingFunction":"8gRnw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8gRnw":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports,__globalThis) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"31IoH":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-// visar användare som är "inloggad"
-parcelHelpers.export(exports, "displayUser", ()=>displayUser);
+parcelHelpers.export(exports, "getMembersUrl", ()=>getMembersUrl);
+parcelHelpers.export(exports, "postNewMemberUrl", ()=>postNewMemberUrl);
+parcelHelpers.export(exports, "getTasksForMemberUrl", ()=>getTasksForMemberUrl);
+parcelHelpers.export(exports, "writeTaskForMemberUrl", ()=>writeTaskForMemberUrl);
+parcelHelpers.export(exports, "updateIsCompleteUrl", ()=>updateIsCompleteUrl);
+parcelHelpers.export(exports, "getAllTasksUrl", ()=>getAllTasksUrl);
+parcelHelpers.export(exports, "deleteTaskUrl", ()=>deleteTaskUrl);
+parcelHelpers.export(exports, "updateAssignedUserUrl", ()=>updateAssignedUserUrl);
+const getMembersUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/members';
+const postNewMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/new-member';
+const getTasksForMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks';
+const writeTaskForMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/new-task';
+const updateIsCompleteUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks/';
+const getAllTasksUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks';
+const deleteTaskUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks/';
+const updateAssignedUserUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/assign-task/';
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8gRnw":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
 // kontrolerar status på tasks och visar de som är färdiga
 parcelHelpers.export(exports, "checkStatus", ()=>checkStatus);
 // visar alla tasks för alla användare FÖRUTOM de som inte är not assigned
@@ -855,43 +933,16 @@ parcelHelpers.export(exports, "displayNotAssignedTask", ()=>displayNotAssignedTa
 parcelHelpers.export(exports, "displayNotLoggedInTasks", ()=>displayNotLoggedInTasks);
 // visar options (medlemmar) för att assigna tasks
 parcelHelpers.export(exports, "displayOptions", ()=>displayOptions);
-// får ej att fungera i annan modul
-parcelHelpers.export(exports, "filterTasksUsername", ()=>filterTasksUsername);
-parcelHelpers.export(exports, "filterTaskRole", ()=>filterTaskRole);
-// sortera tasks a-z samt senaste (timestamp)
-parcelHelpers.export(exports, "sortTasksAZ", ()=>sortTasksAZ);
-parcelHelpers.export(exports, "sortTasksByTimeStamp", ()=>sortTasksByTimeStamp);
-// tasks för användare som är inloggad
-parcelHelpers.export(exports, "displayTasks", ()=>displayTasks);
 var _updateFunctions = require("../Fetching Functions/updateFunctions");
 var _urls = require("../Fetching Functions/urls");
 var _memberFunctions = require("../Fetching Functions/memberFunctions");
 var _getAllTasks = require("../Fetching Functions/getAllTasks");
-function displayUser(username, email, role) {
-    const loginWrapper = document.querySelector('.loginWrapper');
-    const prevMember = document.querySelector('.member');
-    if (prevMember) prevMember.remove();
-    const member = document.createElement('div');
-    member.classList.add('member');
-    member.innerHTML = `
-        <div>
-        <h1>Current user</h1>
-        <br></br>
-            <h2>${username}</h2>
-            <p>${email}</p>
-            <p>${role}</p>
-        </div>`;
-    loginWrapper.append(member);
-}
 async function checkStatus() {
     const raw = await fetch(`${(0, _urls.getAllTasksUrl)}`);
     const tasks = await raw.json();
     tasks.forEach((task)=>{
         const status = task.isComplete;
-        if (status == true) {
-            console.log(task);
-            displayTaskAsComplete(task);
-        }
+        if (status == true) displayTaskAsComplete(task);
     });
     return tasks;
 }
@@ -910,10 +961,7 @@ async function checkMemberTask(username) {
     const raw = await fetch(`${(0, _urls.getTasksForMemberUrl)}/${username}`);
     const tasks = await raw.json();
     tasks.forEach((task)=>{
-        if (task.isComplete == false && task.username !== 'not-assigned') {
-            displayTaskAsProgress(task);
-            console.log(task);
-        }
+        if (task.isComplete == false && task.username !== 'not-assigned') displayTaskAsProgress(task);
     });
     return tasks;
 }
@@ -952,7 +1000,6 @@ async function displayTaskAsProgress(task) {
             });
             inCompleteTasksList.removeChild(taskElement);
         }
-        console.log(task.id);
         await checkStatus();
     });
     boxDiv.append(updateCheckbox, label);
@@ -1033,7 +1080,6 @@ function displayNotLoggedInTasks(task) {
     taskElementP.classList.add('taskElement');
     taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
     inCompleteTasksList.append(taskElementP);
-    console.log(task, 'here!!');
 }
 async function displayOptions(selectElement) {
     selectElement.innerHTML = '';
@@ -1049,107 +1095,6 @@ async function displayOptions(selectElement) {
         option.value = member.username, member.role;
         option.innerText = `Member: ${member.username}, Role: ${member.role}`;
         selectElement.append(notAssignedOption, option, anyOptions);
-    });
-}
-async function filterTasksUsername(username) {
-    const inCompleteTasksList = document.querySelector('#incompleteTasks');
-    inCompleteTasksList.innerHTML = '';
-    const tasks = await (0, _getAllTasks.getAllTasks)();
-    const filteredTasks = tasks.filter((task)=>task.username === username);
-    filteredTasks.forEach((task)=>{
-        if (task.username !== 'not-assigned') {
-            displayNotLoggedInTasks(task);
-            console.log(task);
-        }
-    });
-    return filteredTasks;
-}
-async function filterTaskRole(role) {
-    const inCompleteTasksList = document.querySelector('#incompleteTasks');
-    inCompleteTasksList.innerHTML = '';
-    const tasks = await (0, _getAllTasks.getAllTasks)();
-    const filteredTasks = tasks.filter((task)=>task.role === role);
-    filteredTasks.forEach((task)=>{
-        if (task.username !== 'not-assigned') displayNotLoggedInTasks(task);
-    });
-    return filteredTasks;
-}
-const filterForm = document.querySelector('#filterForm');
-filterForm.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const formData = new FormData(filterForm);
-    const username = formData.get('userFilter');
-    const role = formData.get('role');
-    const timeAndAlph = formData.get('timeAndAlph');
-    if (timeAndAlph === 'a-z') await sortTasksAZ();
-    else await sortTasksByTimeStamp();
-    if (role === 'any' && username === 'any') return;
-    if (role === 'any') await filterTasksUsername(username);
-    if (username === 'any') {
-        await filterTaskRole(role);
-        return;
-    }
-});
-async function sortTasksAZ() {
-    const incompleteTasksList = document.querySelector('#incompleteTasks');
-    incompleteTasksList.innerHTML = '';
-    const tasks = await (0, _getAllTasks.getAllTasks)();
-    const sortedTasks = tasks.sort((a, b)=>{
-        const aDescription = a.description.toLowerCase();
-        const bDescription = b.description.toLowerCase();
-        if (aDescription < bDescription) return -1;
-        if (aDescription > bDescription) return 1;
-        console.log(sortedTasks);
-        return 0;
-    });
-    sortedTasks.forEach((task)=>{
-        displayNotLoggedInTasks(task);
-    });
-    return sortedTasks;
-}
-async function sortTasksByTimeStamp() {
-    const tasks = await (0, _getAllTasks.getAllTasks)();
-    const sortedTasks = tasks.sort((a, b)=>{
-        const aDate = new Date(a.timeStamp).getTime();
-        const bDate = new Date(b.timeStamp).getTime();
-        console.log(a.timeStamp);
-        if (aDate > bDate) return -1;
-        if (aDate < bDate) return 1;
-        return 0;
-    });
-    sortedTasks.forEach((task)=>{
-        displayNotLoggedInTasks(task);
-    });
-    return sortedTasks;
-}
-async function displayTasks(username) {
-    const previousDOM = document.querySelectorAll('.taskElement');
-    if (previousDOM) previousDOM.forEach((element)=>{
-        element.remove();
-    });
-    const response = await (0, _memberFunctions.getTasksForMember)(username);
-    response.forEach((task)=>{
-        if (task.username == 'not-assigned') {
-            const taskElement = document.createElement('div');
-            taskElement.classList.add('taskElementLoggedIn');
-            taskElement.innerHTML = `
-            <p>Assigned to: ${task.username}</p>
-            <p>For role: ${task.role}</p>
-            <p>Task: ${task.description}</p>
-            <p>Deadline: ${task.dueDate}</p>
-            <p>Task ID: ${task.id}</p>
-            <input type="checkbox" id="isCompletedBox">Status: ${task.isComplete}</input>`;
-            // konsultera med lärare om detta är rätt sätt att göra eller om mer modulering kan implementeras
-            const isCompletedBox = taskElement.querySelector('#isCompletedBox');
-            if (task.isComplete == true) isCompletedBox.checked = true;
-            else isCompletedBox.checked = false;
-            isCompletedBox.addEventListener('change', async (e)=>{
-                await (0, _updateFunctions.updateIsComplete)(task.id, isCompletedBox.checked);
-                displayTasks(task.username);
-                console.log(task.id);
-            });
-            document.body.appendChild(taskElement);
-        }
     });
 }
 
@@ -1217,57 +1162,7 @@ async function updateAssignedUser(taskID, username) {
     }
 }
 
-},{"../Rendering Functions/displayingFunction":"8gRnw","./urls":"31IoH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"31IoH":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "getMembersUrl", ()=>getMembersUrl);
-parcelHelpers.export(exports, "postNewMemberUrl", ()=>postNewMemberUrl);
-parcelHelpers.export(exports, "getTasksForMemberUrl", ()=>getTasksForMemberUrl);
-parcelHelpers.export(exports, "writeTaskForMemberUrl", ()=>writeTaskForMemberUrl);
-parcelHelpers.export(exports, "updateIsCompleteUrl", ()=>updateIsCompleteUrl);
-parcelHelpers.export(exports, "getAllTasksUrl", ()=>getAllTasksUrl);
-parcelHelpers.export(exports, "deleteTaskUrl", ()=>deleteTaskUrl);
-parcelHelpers.export(exports, "updateAssignedUserUrl", ()=>updateAssignedUserUrl);
-const getMembersUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/members';
-const postNewMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/new-member';
-const getTasksForMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks';
-const writeTaskForMemberUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/new-task';
-const updateIsCompleteUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks/';
-const getAllTasksUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks';
-const deleteTaskUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/tasks/';
-const updateAssignedUserUrl = 'https://fe24-js2-slutprojekt-gustaf-vingren.onrender.com/assign-task/';
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports,__globalThis) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"eH1rR":[function(require,module,exports,__globalThis) {
+},{"../Rendering Functions/displayingFunction":"8gRnw","./urls":"31IoH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eH1rR":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getAllTasks", ()=>getAllTasks);
@@ -1287,6 +1182,8 @@ async function getAllTasks() {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Task", ()=>Task);
+var _memberFunctions = require("../Fetching Functions/memberFunctions");
+var _updateFunctions = require("../Fetching Functions/updateFunctions");
 class Task {
     constructor(username, role, description, dueDate, isComplete, timeStamp){
         this.username = username;
@@ -1294,10 +1191,50 @@ class Task {
         this.role = role;
         this.dueDate = dueDate;
         this.isComplete = isComplete;
-        this.timeStamp = '';
+        this.timeStamp = timeStamp || new Date().toISOString(); // Default to current time
+    }
+    // Create a new task and send it to the server using the writeTaskForMember function
+    async createNewTask() {
+        const taskData = {
+            username: this.username,
+            role: this.role,
+            description: this.description,
+            dueDate: this.dueDate,
+            isComplete: this.isComplete,
+            timeStamp: this.timeStamp // Include the timestamp
+        };
+        await (0, _memberFunctions.writeTaskForMember)(taskData); // Send the task data to the server
+    }
+    static async displayTasks(username) {
+        const previousDOM = document.querySelectorAll('.taskElement');
+        previousDOM.forEach((element)=>{
+            element.remove();
+        });
+        const tasks = await (0, _memberFunctions.getTasksForMember)(username); // Assuming this fetches the tasks for the user
+        tasks.forEach((task)=>{
+            if (task.username === 'not-assigned') {
+                const taskElement = document.createElement('div');
+                taskElement.classList.add('taskElementLoggedIn');
+                taskElement.innerHTML = `
+                    <p>Assigned to: ${task.username}</p>
+                    <p>For role: ${task.role}</p>
+                    <p>Task: ${task.description}</p>
+                    <p>Deadline: ${task.dueDate}</p>
+                    <p>Task ID: ${task.id}</p>
+                    <input type="checkbox" id="isCompletedBox">Status: ${task.isComplete}</input>`;
+                const isCompletedBox = taskElement.querySelector('#isCompletedBox');
+                if (task.isComplete) isCompletedBox.checked = true;
+                else isCompletedBox.checked = false;
+                isCompletedBox.addEventListener('change', async (e)=>{
+                    await (0, _updateFunctions.updateIsComplete)(task.id, isCompletedBox.checked);
+                    Task.displayTasks(task.username); // Refresh task list after update
+                });
+                document.body.appendChild(taskElement);
+            }
+        });
     }
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["kmTUK","dMJ0o"], "dMJ0o", "parcelRequire94c2")
+},{"../Fetching Functions/memberFunctions":"cwo3O","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../Fetching Functions/updateFunctions":"kkXmc"}]},["kmTUK","dMJ0o"], "dMJ0o", "parcelRequire94c2")
 
 //# sourceMappingURL=index.3bddbf4f.js.map

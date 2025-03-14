@@ -9,7 +9,7 @@ export async function initMember(username: string): Promise<void> {
     const members: Member[] = await getAll();
     const member = members.find(member => member.username === username);
     if (member) {
-        member.displayMember(username);
+        member.displayMember();
     }
 }
 
