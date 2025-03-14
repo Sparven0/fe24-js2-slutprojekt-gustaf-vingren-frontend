@@ -3,7 +3,6 @@ import { getMembersUrl } from "./urls";
 import { postNewMemberUrl } from "./urls";
 import { getTasksForMemberUrl } from "./urls";
 import { writeTaskForMemberUrl } from "./urls";
-import { Task } from "../Rendering Functions/TaskClass";
 import { displayOptions } from "../Rendering Functions/displayingFunction";
 import { initMember } from "../Rendering Functions/initializeMember";
 import { memberSelect } from "../main";

@@ -7,7 +7,6 @@ import { Task } from "./TaskClass";
 import { getAll } from "../Fetching Functions/memberFunctions";
 import { deleteTask } from "../Fetching Functions/updateFunctions";
 import { updateAssignedUser } from "../Fetching Functions/updateFunctions";
-import { getTasksForMember } from "../Fetching Functions/memberFunctions";
 import { getAllTasks } from "../Fetching Functions/getAllTasks";
 
 // kontrolerar status på tasks och visar de som är färdiga

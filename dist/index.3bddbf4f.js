@@ -1112,9 +1112,9 @@ async function updateIsComplete(taskID, taskStatus) {
         isComplete: taskStatus
     };
     const options = {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     };
@@ -1123,14 +1123,14 @@ async function updateIsComplete(taskID, taskStatus) {
         const data = await response.json();
         console.log(data);
     } catch (e) {
-        console.log('Error updating task', e);
+        console.log("Error updating task", e);
     }
 }
 async function deleteTask(taskID) {
     const options = {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         }
     };
     try {
@@ -1139,7 +1139,7 @@ async function deleteTask(taskID) {
         await (0, _displayingFunction.checkNotAssignedTask)();
         console.log(data);
     } catch (e) {
-        console.log('Error deleting task', e);
+        console.log("Error deleting task", e);
     }
 }
 async function updateAssignedUser(taskID, username) {
@@ -1147,9 +1147,9 @@ async function updateAssignedUser(taskID, username) {
         username: username
     };
     const options = {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     };
@@ -1158,7 +1158,7 @@ async function updateAssignedUser(taskID, username) {
         const data = await response.json();
         console.log(data);
     } catch (e) {
-        console.log('Error updating task', e);
+        console.log("Error updating task", e);
     }
 }
 
