@@ -1,4 +1,4 @@
-import { checkNotAssignedTask } from "../Rendering Functions/displayingFunction";
+import { checkNotAssignedTask } from "../RenderingFunctions/displayingFunction";
 import { updateIsCompleteUrl } from "./urls";
 import { deleteTaskUrl } from "./urls";
 import { updateAssignedUserUrl } from "./urls";

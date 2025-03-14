@@ -3,8 +3,8 @@ import { getMembersUrl } from "./urls";
 import { postNewMemberUrl } from "./urls";
 import { getTasksForMemberUrl } from "./urls";
 import { writeTaskForMemberUrl } from "./urls";
-import { displayOptions } from "../Rendering Functions/displayingFunction";
-import { initMember } from "../Rendering Functions/initializeMember";
+import { displayOptions } from "../RenderingFunctions/displayingFunction";
+import { initMember } from "../RenderingFunctions/initializeMember";
 import { memberSelect } from "../main";
 
 

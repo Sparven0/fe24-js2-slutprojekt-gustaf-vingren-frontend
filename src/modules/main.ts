@@ -1,10 +1,10 @@
-import { initMember } from "./Rendering Functions/initializeMember";
-import { displayOptions } from "./Rendering Functions/displayingFunction";
-import { checkMemberTask } from "./Rendering Functions/displayingFunction";
-import { Task } from "./Rendering Functions/TaskClass";
-import { checkNotAssignedTask } from "./Rendering Functions/displayingFunction";
-import { checkTasksNotLoggedIn } from "./Rendering Functions/displayingFunction";
-import { checkStatus } from "./Rendering Functions/displayingFunction";
+import { initMember } from "./RenderingFunctions/initializeMember";
+import { displayOptions } from "./RenderingFunctions/displayingFunction";
+import { checkMemberTask } from "./RenderingFunctions/displayingFunction";
+import { Task } from "./RenderingFunctions/TaskClass";
+import { checkNotAssignedTask } from "./RenderingFunctions/displayingFunction";
+import { checkTasksNotLoggedIn } from "./RenderingFunctions/displayingFunction";
+import { checkStatus } from "./RenderingFunctions/displayingFunction";
 import { postNew } from "./Fetching Functions/memberFunctions";
 
 

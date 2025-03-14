@@ -1,5 +1,5 @@
 import { getAllTasksUrl } from "./urls";
-import { Task } from "../Rendering Functions/TaskClass";
+import { Task } from "../RenderingFunctions/TaskClass";
 
 export async function getAllTasks():Promise<Task[]>{
     try{
