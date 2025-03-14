@@ -947,12 +947,12 @@ async function checkStatus() {
     return tasks;
 }
 async function checkTasksNotLoggedIn() {
-    const incompleteTasksList = document.querySelector('#incompleteTasks');
-    incompleteTasksList.innerHTML = '';
+    const incompleteTasksList = document.querySelector("#incompleteTasks");
+    incompleteTasksList.innerHTML = "";
     const raw = await fetch(`${(0, _urls.getAllTasksUrl)}`);
     const tasks = await raw.json();
     tasks.forEach((task)=>{
-        if (task.username !== 'not-assigned' && task.isComplete == false) displayNotLoggedInTasks(task);
+        if (task.username !== "not-assigned" && task.isComplete == false) displayNotLoggedInTasks(task);
     });
     return tasks;
 }
@@ -961,40 +961,40 @@ async function checkMemberTask(username) {
     const raw = await fetch(`${(0, _urls.getTasksForMemberUrl)}/${username}`);
     const tasks = await raw.json();
     tasks.forEach((task)=>{
-        if (task.isComplete == false && task.username !== 'not-assigned') displayTaskAsProgress(task);
+        if (task.isComplete == false && task.username !== "not-assigned") displayTaskAsProgress(task);
     });
     return tasks;
 }
 async function checkNotAssignedTask() {
     const tasks = await (0, _getAllTasks.getAllTasks)();
     tasks.forEach((task)=>{
-        if (task.username == 'not-assigned') displayNotAssignedTask(task);
+        if (task.username == "not-assigned") displayNotAssignedTask(task);
     });
     return tasks;
 }
 // inte färdiga men assigned
 async function removeElements() {
-    const inCompleteTasksList = document.querySelector('#incompleteTasks');
-    inCompleteTasksList.innerHTML = '';
+    const inCompleteTasksList = document.querySelector("#incompleteTasks");
+    inCompleteTasksList.innerHTML = "";
 }
 async function displayTaskAsProgress(task) {
     await removeElements();
-    const inCompleteTasksList = document.querySelector('#incompleteTasks');
-    const taskElement = document.createElement('li');
-    taskElement.classList.add('taskElement');
-    const boxDiv = document.createElement('div');
-    boxDiv.classList.add('boxDiv');
-    const updateCheckbox = document.createElement('input');
-    const label = document.createElement('label');
-    label.innerText = 'Completed';
-    updateCheckbox.type = 'checkbox';
-    updateCheckbox.id = 'isCompletedBox';
-    updateCheckbox.addEventListener('change', async (e)=>{
+    const inCompleteTasksList = document.querySelector("#incompleteTasks");
+    const taskElement = document.createElement("li");
+    taskElement.classList.add("taskElement");
+    const boxDiv = document.createElement("div");
+    boxDiv.classList.add("boxDiv");
+    const updateCheckbox = document.createElement("input");
+    const label = document.createElement("label");
+    label.innerText = "Completed";
+    updateCheckbox.type = "checkbox";
+    updateCheckbox.id = "isCompletedBox";
+    updateCheckbox.addEventListener("change", async (e)=>{
         await checkNotAssignedTask();
         await checkStatus();
         await (0, _updateFunctions.updateIsComplete)(task.id, updateCheckbox.checked);
         if (updateCheckbox.checked) {
-            const prevDOM = document.querySelectorAll('.taskElementC');
+            const prevDOM = document.querySelectorAll(".taskElementC");
             prevDOM.forEach((element)=>{
                 element.remove();
             });
@@ -1013,17 +1013,17 @@ async function displayTaskAsProgress(task) {
     inCompleteTasksList.append(taskElement);
 }
 function displayTaskAsComplete(task) {
-    const completedTasksList = document.querySelector('#completedTasks');
-    const taskElementC = document.createElement('li');
-    taskElementC.classList.add('taskElementC');
-    const removeBtn = document.createElement('button');
-    removeBtn.innerHTML = 'Remove task';
-    removeBtn.classList.add('removeBtn');
-    removeBtn.addEventListener('click', async (e)=>{
+    const completedTasksList = document.querySelector("#completedTasks");
+    const taskElementC = document.createElement("li");
+    taskElementC.classList.add("taskElementC");
+    const removeBtn = document.createElement("button");
+    removeBtn.innerHTML = "Remove task";
+    removeBtn.classList.add("removeBtn");
+    removeBtn.addEventListener("click", async (e)=>{
         await (0, _updateFunctions.deleteTask)(task.id);
         taskElementC.remove();
-        const inCompleteTasksList = document.querySelector('#incompleteTasks');
-        const incompleteTaskElements = inCompleteTasksList.querySelectorAll('.taskElement');
+        const inCompleteTasksList = document.querySelector("#incompleteTasks");
+        const incompleteTaskElements = inCompleteTasksList.querySelectorAll(".taskElement");
         incompleteTaskElements.forEach((element)=>{
             if (element.innerHTML.includes(task.description)) inCompleteTasksList.removeChild(element);
         });
@@ -1034,33 +1034,33 @@ function displayTaskAsComplete(task) {
 }
 function displayTaskAsPending(task) {}
 async function displayNotAssignedTask(task) {
-    const notAssignedTasksList = document.querySelector('#notAssignedTasks');
-    notAssignedTasksList.innerHTML = '';
-    const taskElementN = document.createElement('li');
-    taskElementN.classList.add('taskElementN');
+    const notAssignedTasksList = document.querySelector("#notAssignedTasks");
+    notAssignedTasksList.innerHTML = "";
+    const taskElementN = document.createElement("li");
+    taskElementN.classList.add("taskElementN");
     taskElementN.innerHTML = `<p class="taskElementCtext">Description: ${task.description}</p> <p class="taskElementCtext">Assigned to: ${task.username}</p> <p class="taskElementCtext>Role: ${task.role}</p><p class="taskElementCtext>Due: ${task.dueDate}</p><p class="taskElementCtext>Created: ${task.timeStamp}</p>`;
-    const assignUsersForm = document.createElement('form');
-    assignUsersForm.id = 'assignUserForm';
-    const assignedMemberOptions = document.createElement('select');
-    assignedMemberOptions.id = 'assignedMemberOptions2';
-    const notAssignedOption = document.createElement('option');
-    notAssignedOption.value = 'not-assigned';
-    notAssignedOption.innerText = 'Not Assigned';
+    const assignUsersForm = document.createElement("form");
+    assignUsersForm.id = "assignUserForm";
+    const assignedMemberOptions = document.createElement("select");
+    assignedMemberOptions.id = "assignedMemberOptions2";
+    const notAssignedOption = document.createElement("option");
+    notAssignedOption.value = "not-assigned";
+    notAssignedOption.innerText = "Not Assigned";
     assignedMemberOptions.append(notAssignedOption);
     const members = await (0, _memberFunctions.getAll)();
     members.forEach((member)=>{
         if (member.role === task.role) {
-            const option = document.createElement('option');
+            const option = document.createElement("option");
             option.value = member.username;
             option.innerText = `${member.username} (Role: ${member.role})`;
             assignedMemberOptions.append(option);
         }
     });
-    const saveBtn = document.createElement('button');
-    saveBtn.id = 'saveBtn';
-    saveBtn.type = 'submit';
-    saveBtn.innerHTML = 'Save changes';
-    saveBtn.addEventListener('click', async (e)=>{
+    const saveBtn = document.createElement("button");
+    saveBtn.id = "saveBtn";
+    saveBtn.type = "submit";
+    saveBtn.innerHTML = "Save changes";
+    saveBtn.addEventListener("click", async (e)=>{
         e.preventDefault();
         const selectedUsername = assignedMemberOptions.value;
         const selectedMember = members.find((member)=>member.username === selectedUsername);
@@ -1075,23 +1075,23 @@ async function displayNotAssignedTask(task) {
     notAssignedTasksList.append(taskElementN);
 }
 function displayNotLoggedInTasks(task) {
-    const inCompleteTasksList = document.querySelector('#incompleteTasks');
-    const taskElementP = document.createElement('li');
-    taskElementP.classList.add('taskElement');
+    const inCompleteTasksList = document.querySelector("#incompleteTasks");
+    const taskElementP = document.createElement("li");
+    taskElementP.classList.add("taskElement");
     taskElementP.innerHTML = `<p class ="taskElementText">Role: ${task.role}</p><p class="taskElementPtext">Description:</p> ${task.description} <p class="taskElementPtext">Assigned to: ${task.username}</p><p class="taskElementPtext">Created: ${task.timeStamp}</p><p class=""taskElementPtext>Due: ${task.dueDate}</p>`;
     inCompleteTasksList.append(taskElementP);
 }
 async function displayOptions(selectElement) {
-    selectElement.innerHTML = '';
+    selectElement.innerHTML = "";
     const members = await (0, _memberFunctions.getAll)();
-    const notAssignedOption = document.createElement('option');
-    notAssignedOption.value = 'not-assigned';
-    notAssignedOption.innerText = 'Not Assigned';
-    const anyOptions = document.createElement('option');
-    anyOptions.value = 'any';
-    anyOptions.innerText = 'any';
+    const notAssignedOption = document.createElement("option");
+    notAssignedOption.value = "not-assigned";
+    notAssignedOption.innerText = "Not Assigned";
+    const anyOptions = document.createElement("option");
+    anyOptions.value = "any";
+    anyOptions.innerText = "any";
     members.forEach((member)=>{
-        const option = document.createElement('option');
+        const option = document.createElement("option");
         option.value = member.username, member.role;
         option.innerText = `Member: ${member.username}, Role: ${member.role}`;
         selectElement.append(notAssignedOption, option, anyOptions);
