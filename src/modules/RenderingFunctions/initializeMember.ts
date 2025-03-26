@@ -1,6 +1,8 @@
+
+
 import { getAll } from "../Fetching Functions/memberFunctions";
 import { Member } from "../MemberClass";
-import { getTasksForMember } from "../Fetching Functions/memberFunctions";
+
 
 
 // initialisera membern

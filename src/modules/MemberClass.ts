@@ -1,3 +1,6 @@
+// här finns klass för Member. Klassen har metoder för att visa användarens information när denne har loggat in.
+// displayUser visar informationen för användaren som är inloggad. Detta är bara för att man ska se sin egen info
+// displayMember visar informationen för användare, member.displayMember()
 
 export class Member {
     public username: string;

@@ -9,6 +9,8 @@ import { memberSelect } from "../main";
 
 
 
+// i denna filen finns funktioner för att hämta användare, lägga till användare och hämta tasks för användare
+
 
 // läsa alla members
 

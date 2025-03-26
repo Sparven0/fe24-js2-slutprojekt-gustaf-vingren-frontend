@@ -1,3 +1,7 @@
+// Denna klassen skapar en task, skriver tasken till en användare och visar tasken för användaren.
+// metoden createNewTask skapar en ny task och skickar den till writeTaskForMember.
+// wireTasksForMember skickar tasken till databasen genom fetch API.
+
 import { writeTaskForMember } from "../Fetching Functions/memberFunctions";
 import { getTasksForMember } from "../Fetching Functions/memberFunctions";
 import { updateIsComplete } from "../Fetching Functions/updateFunctions";
@@ -27,10 +31,10 @@ export class Task {
         this.role = role;
         this.dueDate = dueDate;
         this.isComplete = isComplete;
-        this.timeStamp = timeStamp || new Date().toISOString(); // Default to current time
+        this.timeStamp = timeStamp || new Date().toISOString();
     }
 
-    // Create a new task and send it to the server using the writeTaskForMember function
+    
     async createNewTask(): Promise<void> {
         const taskData = {
             title: this.title,
@@ -39,9 +43,9 @@ export class Task {
             description: this.description,
             dueDate: this.dueDate,
             isComplete: this.isComplete,
-            timeStamp: this.timeStamp // Include the timestamp
+            timeStamp: this.timeStamp 
         };
-        await writeTaskForMember(taskData); // Send the task data to the server
+        await writeTaskForMember(taskData);
     }
     static async displayTasks(username: string): Promise<void> {
         const previousDOM = document.querySelectorAll('.taskElement');
@@ -49,7 +53,7 @@ export class Task {
             element.remove();
         });
 
-        const tasks = await getTasksForMember(username); // Assuming this fetches the tasks for the user
+        const tasks = await getTasksForMember(username);
         tasks.forEach((task: Task) => {
             if (task.username === 'not-assigned') {
                 const taskElement = document.createElement('div');
@@ -72,7 +76,7 @@ export class Task {
 
                 isCompletedBox.addEventListener('change', async (e) => {
                     await updateIsComplete(task.id, isCompletedBox.checked);
-                    Task.displayTasks(task.username); // Refresh task list after update
+                    Task.displayTasks(task.username); 
                 });
 
                 document.body.appendChild(taskElement);

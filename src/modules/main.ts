@@ -1,5 +1,9 @@
+// denna filen innehåller funktioner som körs direkt utan user-input. 
+// checkTasksNotLoggedIn körs när sidan laddas och visar alla tasks när användaren inte är inloggad. 
+// checkNotAssignedTask körs när sidan laddas för att visa alla tasks som inte är tilldelade någon användare.
+
 import { initMember } from "./RenderingFunctions/initializeMember";
-import { displayNotLoggedInTasks, displayOptions } from "./RenderingFunctions/displayingFunction";
+import {displayOptions } from "./RenderingFunctions/displayingFunction";
 import { checkMemberTask } from "./RenderingFunctions/displayingFunction";
 import { Task } from "./RenderingFunctions/TaskClass";
 import { checkNotAssignedTask } from "./RenderingFunctions/displayingFunction";
@@ -15,8 +19,7 @@ import { filterTasksUsername } from "./RenderingFunctions/sortAndFilter";
 import { filterTaskRole } from "./RenderingFunctions/sortAndFilter";
 
 
-// main.ts importerar och kör alla funktioner som körs "villkorslöst", dvs de som körs oavsett användarinteraktion.
-// main.ts hanterar även de mest basala interaktioner såsom att logga in, skapa nya tasks samt skapa nya användare
+
 
 
 export const loginForm = document.querySelector(
