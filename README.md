@@ -59,6 +59,7 @@ Det ska finnas tre kolumner.
 
 
 ## Installation
+Projektet använder 'npm run build' för att bundla och builda production deploy
 
 Projektet använder Parcel som bundler. 
 - 
